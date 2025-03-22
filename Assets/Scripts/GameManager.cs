@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
 	public GameObject FoodSpawner;
 	public GameObject GoldenSpawner;
 	public Player PlayerScriopt;
+	public TMP_Text scoreText;
 
 
 	private void Awake()
@@ -58,9 +60,34 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	int GetHighScore()
+	{
+		return PlayerPrefs.GetInt("highScore");
+	}
+
+	public float CalculateGameSpeed()
+	{
+		if(State != GameState.Playing)
+		{
+			return 5f;
+		}
+
+		float speed = 5f + (0.5f * Mathf.Floor(CalculateScore() / 10f));
+		return Mathf.Min(speed, 20f);
+	}
+
     // Update is called once per frame
     void Update()
     {
+		if(State == GameState.Playing)
+		{
+			scoreText.text = "Score : " + Mathf.FloorToInt(CalculateScore());
+		} else if(State == GameState.Dead)
+		{
+			SaveHighScore();
+			scoreText.text = "High Score : " + GetHighScore();
+		}
+
 		if (State == GameState.Intro && Input.GetKeyDown(KeyCode.Space))
 		{
 			State = GameState.Playing;
