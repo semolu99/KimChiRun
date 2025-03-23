@@ -23,15 +23,6 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
-		{
-			PlayerRigidBoby.AddForceY(JumpForce, ForceMode2D.Impulse);
-			isGrounded = false;
-			PlayerAnimator.SetInteger("state", 1);
-		}
-	}
 
 	public void KillPlayer()
 	{
@@ -83,15 +74,10 @@ public class Player : MonoBehaviour
 				Hit();
 			}
 		}
-		else if(collider.gameObject.tag == "food")
-		{
-			Destroy(collider.gameObject);
-			Heal();
-		}
 		else if (collider.gameObject.tag == "golden")
 		{
 			Destroy(collider.gameObject);
-			StartInvincible();
+			Heal();
 		}
 
 	}
